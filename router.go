@@ -22,6 +22,7 @@ func Router() *gin.Engine {
 	router.GET("/register/:deviceToken", controller.RegisterController)
 	router.POST("/register", controller.RegisterController)
 	router.GET("/info", controller.GetInfo)
+	router.POST("/push", controller.BaseController)
 	router.GET("/:device_key", controller.BaseController)
 	router.GET("/:device_key/:params1", controller.BaseController)
 	router.GET("/:device_key/:params1/:params2", controller.BaseController)

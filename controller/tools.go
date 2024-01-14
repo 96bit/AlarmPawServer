@@ -4,22 +4,16 @@ import (
 	"AlarmPawServer/config"
 	"AlarmPawServer/database"
 	"AlarmPawServer/modal"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
 
 func ParamsHandler(c *gin.Context) (result modal.Params, err error) {
 
-	if len(c.Params) != 0 && c.Params[0].Value != "" {
-		result.DeviceToken, err = database.DB.DeviceTokenByKey(c.Params[0].Value)
-		if err != nil {
-			c.JSON(200, failed(400, "failed to get device token: %v", err))
-			return
-		}
-	}
-
 	// 获取所有url参数
 	switch len(c.Params) {
+
 	case 1:
 		result.DeviceKey = c.Params[0].Value
 	case 2:
@@ -29,7 +23,7 @@ func ParamsHandler(c *gin.Context) (result modal.Params, err error) {
 		result.DeviceKey = c.Params[0].Value
 		result.Title = c.Params[1].Value
 		result.Body = c.Params[2].Value
-	default:
+	case 4:
 		result.DeviceKey = c.Params[0].Value
 		result.Category = c.Params[1].Value
 		result.Title = c.Params[2].Value
@@ -37,6 +31,14 @@ func ParamsHandler(c *gin.Context) (result modal.Params, err error) {
 
 	}
 	var params = c.Request.URL.Query()
+
+	if result.DeviceKey == "" && len(params["deviceKey"]) > 0 {
+		result.DeviceKey = params["deviceKey"][0]
+	}
+
+	if result.DeviceToken == "" && len(params["deviceToken"]) > 0 {
+		result.DeviceToken = params["deviceToken"][0]
+	}
 
 	if result.Title == "" && len(params["title"]) > 0 {
 		result.Title = params["title"][0]
@@ -88,6 +90,15 @@ func ParamsHandler(c *gin.Context) (result modal.Params, err error) {
 
 	if c.Request.Method == "POST" {
 		var postParams = c.Request.PostForm
+
+		if result.DeviceKey == "" && len(postParams["deviceKey"]) != 0 {
+			result.DeviceKey = postParams["deviceKey"][0]
+		}
+
+		if result.DeviceToken == "" && len(postParams["deviceToken"]) != 0 {
+			result.DeviceToken = postParams["deviceToken"][0]
+		}
+
 		if result.Title == "" && len(postParams["title"]) != 0 {
 			result.Title = postParams["title"][0]
 		}
@@ -150,6 +161,19 @@ func ParamsHandler(c *gin.Context) (result modal.Params, err error) {
 	if result.Sound != "" {
 		if !strings.HasSuffix(result.Sound, ".caf") {
 			result.Sound = result.Sound + ".caf"
+		}
+	}
+
+	if result.DeviceToken == "" {
+		if result.DeviceKey == "" {
+			err = errors.New("deviceKey or deviceToken is required")
+			c.JSON(200, failed(400, "deviceKey or deviceToken is required"))
+			return
+		}
+		result.DeviceToken, err = database.DB.DeviceTokenByKey(result.DeviceKey)
+		if err != nil {
+			c.JSON(200, failed(400, "failed to get device token: %v", err))
+			return
 		}
 	}
 
