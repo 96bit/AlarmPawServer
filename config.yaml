@@ -4,7 +4,7 @@ system:
   port: "8080"
   mode: "debug"
   dbType: "default"
-  dbPath: "./db"
+  dbPath: "./data"
 
 mysql:
   host: "localhost"
