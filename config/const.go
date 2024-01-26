@@ -11,9 +11,19 @@ const (
 )
 
 const (
-	CategoryDefault = "myNotificationCategory"
-	AutoCopy        = "0"
-	IsArchive       = "1"
+	CategoryDefault  = "myNotificationCategory"
+	AutoCopyDefault  = "0"
+	IsArchiveDefault = "1"
+	DeviceKey        = "devicekey"
+	DeviceToken      = "devicetoken"
+	Category         = "category"
+	Title            = "title"
+	Body             = "body"
+	IsArchive        = "isarchive"
+	Group            = "group"
+	Sound            = "sound"
+	AutoCopy         = "autocopy"
+	Level            = "level"
 )
 
 const (

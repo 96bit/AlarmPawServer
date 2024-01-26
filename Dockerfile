@@ -7,14 +7,14 @@ RUN set -ex \
     && apk add --no-cache tzdata\
     && rm -rf /var/lib/apk/lists/*
 
-COPY ./data/AlarmPawServer /data/AlarmPawServer
+COPY ./data/AlarmPawServer /AlarmPawServer
 
 
 VOLUME /data
 
 EXPOSE 8080
 
-WORKDIR /data
+WORKDIR /
 
 CMD ["./AlarmPawServer", "-c", "/data/config.yaml"]
 

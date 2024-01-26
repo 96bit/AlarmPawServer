@@ -8,5 +8,11 @@ func GetDsn() string {
 		LocalConfig.Mysql.Port + ")/" +
 		LocalConfig.System.Name +
 		"?charset=utf8mb4&parseTime=True&loc=Local"
+}
 
+func VerifyMap(data map[string]string, key string) string {
+	if value, ok := data[key]; ok {
+		return value
+	}
+	return ""
 }

@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"AlarmPawServer/config"
 	"AlarmPawServer/database"
 	"AlarmPawServer/push"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"runtime"
+	"strings"
 	"time"
 )
 
@@ -18,7 +21,7 @@ func Ping(c *gin.Context) {
 
 func BaseController(c *gin.Context) {
 
-	params, err := push.ToParamsHandler(c)
+	params, err := ToParamsHandler(c)
 	if err != nil {
 		c.JSON(http.StatusOK, failed(400, "failed to get device token: %v", err))
 		return
@@ -35,17 +38,44 @@ func BaseController(c *gin.Context) {
 }
 
 func GetInfo(c *gin.Context) {
+	devices, _ := database.DB.CountAll()
+	c.JSON(200, map[string]interface{}{
+		"version": "1.0.0",
+		"build":   "",
+		"arch":    runtime.GOOS + "/" + runtime.GOARCH,
+		"commit":  "",
+		"devices": devices,
+	})
 
 }
 
 func RegisterController(c *gin.Context) {
 	var deviceKey, deviceToken string
 
-	deviceToken = c.Param("deviceToken")
+	for _, v := range c.Params {
+		if strings.ToLower(v.Key) == config.DeviceKey {
+			deviceKey = v.Value
+		} else if strings.ToLower(v.Key) == config.DeviceToken {
+			deviceToken = v.Value
+		}
+	}
+
+	for k, v := range c.Request.URL.Query() {
+		if strings.ToLower(k) == config.DeviceKey && deviceKey == "" {
+			deviceKey = v[0]
+		} else if strings.ToLower(k) == config.DeviceToken && deviceToken == "" {
+			deviceToken = v[0]
+		}
+	}
 
 	if c.Request.Method == "POST" {
-		deviceKey = c.PostForm("deviceKey")
-		deviceToken = c.PostForm("deviceToken")
+		for k, v := range c.Request.PostForm {
+			if strings.ToLower(k) == config.DeviceKey && deviceKey == "" {
+				deviceKey = v[0]
+			} else if strings.ToLower(k) == config.DeviceToken && deviceToken == "" {
+				deviceToken = v[0]
+			}
+		}
 	}
 
 	if deviceToken == "" {

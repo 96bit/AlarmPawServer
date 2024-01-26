@@ -1,5 +1,7 @@
 system:
   name: "AlarmPaw"
+  user: ""
+  password: ""
   host: "0.0.0.0"
   port: "8080"
   mode: "release"
@@ -15,7 +17,7 @@ mysql:
 apple:
     keyId: "BNY5GUGV38"
     teamId: "FUWV6U942Q"
-    topic: "com.twown.bark"
+    topic: "com.twown.AlarmPaw"
     apnsPrivateKey: |-
       -----BEGIN PRIVATE KEY-----
       MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvjopbchDpzJNojnc

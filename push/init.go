@@ -16,19 +16,6 @@ var (
 	CLI *apns2.Client
 )
 
-const (
-	DeviceKey   = "deviceKey"
-	DeviceToken = "deviceToken"
-	Category    = "category"
-	Title       = "title"
-	Body        = "body"
-	IsArchive   = "isArchive"
-	Group       = "group"
-	Sound       = "sound"
-	AutoCopy    = "autoCopy"
-	Level       = "level"
-)
-
 func init() {
 	authKey, err := token.AuthKeyFromBytes([]byte(config.LocalConfig.Apple.ApnsPrivateKey))
 	if err != nil {
@@ -67,7 +54,7 @@ func init() {
 			},
 			Timeout: apns2.HTTPClientTimeout,
 		},
-		Host: apns2.HostDevelopment,
+		Host: apns2.HostProduction,
 	}
 	log.Printf("init apns client success...\n")
 }
