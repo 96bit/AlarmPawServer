@@ -1,5 +1,10 @@
+# sudo docker build -t alarm-paw-server:latest .
+# docker run -v ./data:/data -p 8080:8080  alarm-paw-server
+
 # 第一阶段：构建阶段
 FROM golang:1.21 AS build
+
+ENV GOPROXY=https://goproxy.cn,direct
 
 # 设置工作目录
 WORKDIR /app
@@ -40,5 +45,4 @@ WORKDIR /
 CMD ["./AlarmPawServer"]
 
 
-# sudo docker build -t alarm-paw-server:latest .
-# docker run -v ./data:/data -p 8080:8080  alarm-paw-server
+
