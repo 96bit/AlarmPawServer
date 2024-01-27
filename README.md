@@ -11,28 +11,6 @@
 
 
 
-### 编译
- * 配置文件要保存在 /data/config.yaml，否则无法启动。
- * 把编译好的二进制文件和配置文件放到同一个目录下
-
-```shell
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o  main  main.go || echo "编译linux版本失败"
-```
-上传文件到服务器上，然后执行以下命令即可启动服务。
-```shell
-./main
-```
-
-
-
-
-## Docker部署
-```shell
-docker run -d --name alarm-paw-server -p 8080:8080 -v ./data:/data  --restart=always  thurmantsao/alarm-paw-server:latest
-```
-
-## Docker-compose部署
-
 ### 配置
 * 复制项目中的/deploy文件夹到服务器上，然后执行以下命令即可。
 * 必须有/data/config.yaml 的配置文件，否则无法启动，文件中的配置项，可以根据自己的需求进行修改。
@@ -54,16 +32,39 @@ mysql: # 仅在 dbType: "mysql" 时有效
   password: "root"
 
 apple: # 复制项目中的配置，不需要修改，仅在自己编译app时需要修改
-    keyId: 
-    teamId: 
-    topic: 
-    apnsPrivateKey:
-
+  keyId:
+  teamId:
+  topic:
+  apnsPrivateKey:
 
 ```
+
+
+  ### 编译
+ * 配置文件要保存在 /data/config.yaml，否则无法启动。
+ * 把编译好的二进制文件和配置文件放到同一个目录下
+
+```shell
+  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o  main  main.go || echo "编译linux版本失败"
+```
+上传文件到服务器上，然后执行以下命令即可启动服务。
+```shell
+  ./main
+```
+
+
+
+
+## Docker部署
+```shell
+  docker run -d --name alarm-paw-server -p 8080:8080 -v ./data:/data  --restart=always  thurmantsao/alarm-paw-server:latest
+```
+
+## Docker-compose部署
+
 ### 启动
 ```shell
-docker-compose up -d
+  docker-compose up -d
 ```
 
 
