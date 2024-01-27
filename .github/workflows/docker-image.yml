@@ -38,7 +38,7 @@ jobs:
             linux/amd64
           tags: |
             thurmantsao/alarm-paw-server:latest
-            thurmantsao/alarm-paw-server:${{ steps.vars.outputs.build_version }}
+            thurmantsao/alarm-paw-server:${{ git describe --tags }}
           push: true
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
