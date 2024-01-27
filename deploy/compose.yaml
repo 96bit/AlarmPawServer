@@ -2,10 +2,11 @@ version: '3'
 
 services:
   AlarmPawServer:
-    image: thurmantsao/alarm-paw-server:latest
+    image: thurmantsao/alarm-paw-server:v2.7
     container_name: AlarmPawServer
     restart: always
     ports:
       - "8080:8080"
     volumes:
-      - ./data:/data
+      - ./deploy:/deploy
+

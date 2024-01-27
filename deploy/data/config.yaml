@@ -6,7 +6,7 @@ system:
   port: "8080"
   mode: "release"
   dbType: "default"
-  dbPath: "/data"
+  dbPath: "/deploy"
 
 mysql:
   host: "localhost"
