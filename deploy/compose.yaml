@@ -8,5 +8,18 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./deploy:/deploy
+      - ./data:/data
 
+#  mysql:
+#    image: mysql:8.0.28-debian
+#    container_name: mysql
+#    restart: always
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: AlarmPaw
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#    volumes:
+#      - ./data/mysql:/var/lib/mysql
