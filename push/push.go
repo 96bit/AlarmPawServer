@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// Push  message to apns server
 func Push(params map[string]string) error {
 
 	pl := payload.NewPayload().
