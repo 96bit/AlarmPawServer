@@ -25,8 +25,7 @@ jobs:
       - name: Environment Variable
         id: vars
         run: echo "::set-output name=build_version::$(git describe --tags)"
-      - name: Debug build version
-        run: echo "Build version: ${{ steps.vars.outputs.build_version }}"
+        
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
