@@ -12,8 +12,9 @@
 
 
 ### 编译
- * 把编译好的二进制文件和配置文件放到同一个目录下，执行以下命令即可启动服务。
  * 配置文件要保存在 /data/config.yaml，否则无法启动。
+ * 把编译好的二进制文件和配置文件放到同一个目录下
+
 ```shell
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o  main  main.go || echo "编译linux版本失败"
 ```
