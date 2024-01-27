@@ -1,5 +1,7 @@
 package config
 
+import "strings"
+
 func GetDsn() string {
 	return LocalConfig.Mysql.Host + ":" +
 		LocalConfig.Mysql.Port +
@@ -15,4 +17,8 @@ func VerifyMap(data map[string]string, key string) string {
 		return value
 	}
 	return ""
+}
+
+func UnifiedParameter(input string) string {
+	return strings.ToLower(strings.TrimSpace(input))
 }

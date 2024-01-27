@@ -16,7 +16,7 @@ type BboltDB struct {
 }
 
 var dbOnce sync.Once
-var db *bbolt.DB
+var BBDB *bbolt.DB
 
 const (
 	bucketName = "device"
@@ -27,10 +27,9 @@ func NewBboltdb(dataDir string) Database {
 	return &BboltDB{}
 }
 
-// CountAll Fetch records count
 func (d *BboltDB) CountAll() (int, error) {
 	var keypairCount int
-	err := db.View(func(tx *bbolt.Tx) error {
+	err := BBDB.View(func(tx *bbolt.Tx) error {
 		keypairCount = tx.Bucket([]byte(bucketName)).Stats().KeyN
 		return nil
 	})
@@ -42,15 +41,13 @@ func (d *BboltDB) CountAll() (int, error) {
 	return keypairCount, nil
 }
 
-// Close close the db file
 func (d *BboltDB) Close() error {
-	return db.Close()
+	return BBDB.Close()
 }
 
-// DeviceTokenByKey get device token of specified key
 func (d *BboltDB) DeviceTokenByKey(key string) (string, error) {
 	var token string
-	err := db.View(func(tx *bbolt.Tx) error {
+	err := BBDB.View(func(tx *bbolt.Tx) error {
 		if bs := tx.Bucket([]byte(bucketName)).Get([]byte(key)); bs == nil {
 			return fmt.Errorf("failed to get [%s] device token from database", key)
 		} else {
@@ -68,7 +65,7 @@ func (d *BboltDB) DeviceTokenByKey(key string) (string, error) {
 // SaveDeviceToken create or update device token of specified key
 
 func (d *BboltDB) SaveDeviceTokenByKey(key, deviceToken string) (string, error) {
-	err := db.Update(func(tx *bbolt.Tx) error {
+	err := BBDB.Update(func(tx *bbolt.Tx) error {
 		bucket := tx.Bucket([]byte(bucketName))
 
 		// If the deviceKey is empty or the corresponding deviceToken cannot be obtained from the database,
@@ -112,6 +109,6 @@ func bboltSetup(dataDir string) {
 		if err != nil {
 			log.Fatalf("failed to create database bucket: %v", err)
 		}
-		db = bboltDB
+		BBDB = bboltDB
 	})
 }

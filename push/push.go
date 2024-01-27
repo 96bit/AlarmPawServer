@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/sideshow/apns2"
 	"github.com/sideshow/apns2/payload"
-	"strings"
 	"time"
 )
 
@@ -18,7 +17,7 @@ func Push(params map[string]string) error {
 		Category(config.VerifyMap(params, config.Category))
 
 	for k, v := range params {
-
+		k = config.UnifiedParameter(k)
 		if k == config.DeviceKey ||
 			k == config.DeviceToken ||
 			k == config.Title ||
@@ -28,15 +27,15 @@ func Push(params map[string]string) error {
 			continue
 		}
 
-		pl.Custom(strings.ToLower(k), v)
+		pl.Custom(k, v)
 
 	}
 
 	if group := config.VerifyMap(params, config.Group); group != "" {
 		pl = pl.ThreadID(group)
 	} else {
-		pl = pl.ThreadID("default")
-		params[config.Group] = "default"
+		pl = pl.ThreadID(config.DefaultGroup)
+		params[config.Group] = config.DefaultGroup
 	}
 
 	resp, err := CLI.Push(&apns2.Notification{
@@ -45,6 +44,7 @@ func Push(params map[string]string) error {
 		Payload:     pl.MutableContent(),
 		Expiration:  time.Now().Add(24 * time.Hour),
 	})
+
 	if err != nil {
 		return err
 	}

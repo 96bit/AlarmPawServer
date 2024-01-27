@@ -21,6 +21,7 @@ const (
 	Body             = "body"
 	IsArchive        = "isarchive"
 	Group            = "group"
+	DefaultGroup     = "Default"
 	Sound            = "sound"
 	AutoCopy         = "autocopy"
 	Level            = "level"
@@ -28,9 +29,9 @@ const (
 
 const (
 	FilePathEnv     = "ALARM_PAW_CONFIG"
-	DefaultFilePath = "/data/config.yaml"
-	TestFilePath    = "/config.test.yaml"
-	ReleaseFilePath = "/config.release.yaml"
+	DefaultFilePath = "/deploy/config.yaml"
+	TestFilePath    = "/deploy/config.test.yaml"
+	ReleaseFilePath = "/deploy/config.release.yaml"
 )
 
 var (

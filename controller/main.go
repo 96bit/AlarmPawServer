@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"runtime"
-	"strings"
 	"time"
 )
 
@@ -53,26 +52,29 @@ func RegisterController(c *gin.Context) {
 	var deviceKey, deviceToken string
 
 	for _, v := range c.Params {
-		if strings.ToLower(v.Key) == config.DeviceKey {
+		paramsKey := config.UnifiedParameter(v.Key)
+		if paramsKey == config.DeviceKey {
 			deviceKey = v.Value
-		} else if strings.ToLower(v.Key) == config.DeviceToken {
+		} else if paramsKey == config.DeviceToken {
 			deviceToken = v.Value
 		}
 	}
 
 	for k, v := range c.Request.URL.Query() {
-		if strings.ToLower(k) == config.DeviceKey && deviceKey == "" {
+		paramsKey := config.UnifiedParameter(k)
+		if paramsKey == config.DeviceKey && deviceKey == "" {
 			deviceKey = v[0]
-		} else if strings.ToLower(k) == config.DeviceToken && deviceToken == "" {
+		} else if paramsKey == config.DeviceToken && deviceToken == "" {
 			deviceToken = v[0]
 		}
 	}
 
 	if c.Request.Method == "POST" {
 		for k, v := range c.Request.PostForm {
-			if strings.ToLower(k) == config.DeviceKey && deviceKey == "" {
+			paramsKey := config.UnifiedParameter(k)
+			if paramsKey == config.DeviceKey && deviceKey == "" {
 				deviceKey = v[0]
-			} else if strings.ToLower(k) == config.DeviceToken && deviceToken == "" {
+			} else if paramsKey == config.DeviceToken && deviceToken == "" {
 				deviceToken = v[0]
 			}
 		}

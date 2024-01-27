@@ -1,30 +1,25 @@
-# sudo docker build -t alarm-paw-server:latest .
-# docker run -v ./data:/data -p 8080:8080  alarm-paw-server
+
 
 # 第一阶段：构建阶段
-FROM golang:1.21 AS build
-
-ENV GOPROXY=https://goproxy.cn,direct
+FROM golang:1.21-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制go.mod和go.sum文件，以便在下载依赖项时缓存
-COPY go.mod go.sum ./
+ENV GOPROXY=https://goproxy.cn,direct
 
-# 下载依赖项
-RUN go mod download
-
-# 将应用程序的代码复制到容器中
 COPY . .
 
-# 构建应用程序
-RUN go build -o main .
+# 下载依赖项
+RUN go mod download \
+    && go build -o /app/main main.go
 
 
 FROM alpine:latest
 
 WORKDIR /app
+
+ARG TIMEZONE=Asia/Shanghai
 
 RUN set -ex \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
@@ -33,16 +28,18 @@ RUN set -ex \
     && apk add --no-cache tzdata\
     && rm -rf /var/lib/apk/lists/*
 
-COPY --from=build /app/main /app
-
+COPY --from=builder /app/main /app/main
 
 VOLUME /data
 
 EXPOSE 8080
 
-WORKDIR /
-
-CMD ["./AlarmPawServer"]
+CMD ["./main"]
 
 
-
+# 清除无用的镜像
+# docker builder prune --force
+# sudo docker build -t thurmantsao/alarm-paw-server:latest .
+# docker run -v ./deploy:/deploy -p 8080:8080  alarm-paw-server
+# docker rmi $(docker images  -q)
+# docker rm $(docker ps -a -q)

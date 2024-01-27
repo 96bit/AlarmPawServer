@@ -28,14 +28,13 @@ func ToParamsHandler(c *gin.Context) (map[string]string, error) {
 		paramsResult[config.Category] = c.Params[1].Value
 		paramsResult[config.Title] = c.Params[2].Value
 		paramsResult[config.Body] = c.Params[3].Value
-
 	}
 
 	// 获取所有url参数
 	var params = c.Request.URL.Query()
 
 	for k, v := range params {
-		key := strings.ToLower(k)
+		key := config.UnifiedParameter(k)
 		if value, ok := paramsResult[key]; !ok || value == "" {
 			paramsResult[key] = v[0]
 		}
@@ -45,7 +44,7 @@ func ToParamsHandler(c *gin.Context) (map[string]string, error) {
 	if c.Request.Method == "POST" {
 		var postParams = c.Request.PostForm
 		for k, v := range postParams {
-			key := strings.ToLower(k)
+			key := config.UnifiedParameter(k)
 			if value, ok := paramsResult[key]; !ok || value == "" {
 				paramsResult[key] = v[0]
 			} else {
