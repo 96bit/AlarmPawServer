@@ -29,9 +29,9 @@ const (
 
 const (
 	FilePathEnv     = "ALARM_PAW_CONFIG"
-	DefaultFilePath = "/deploy/config.yaml"
-	TestFilePath    = "/deploy/config.test.yaml"
-	ReleaseFilePath = "/deploy/config.release.yaml"
+	DefaultFilePath = "/data/config.yaml"
+	TestFilePath    = "/data/config.test.yaml"
+	ReleaseFilePath = "/data/config.release.yaml"
 )
 
 var (
