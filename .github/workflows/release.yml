@@ -1,50 +1,30 @@
-name: Go Build and Release
+name: goreleaser
 
 on:
   push:
     tags:
-      - 'v*'
-  workflow_dispatch:
+      - '*'
+
+permissions:
+  contents: write
 
 jobs:
-  build:
-    name: Build
+  goreleaser:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v2
+      - uses: actions/checkout@v3
         with:
-          go-version: '1.16'
-
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Install Task
-        run: |
-          curl -sL https://taskfile.dev/install.sh | sh
-          echo "$HOME/bin" >> $GITHUB_PATH
-
-      - name: Run Task
-        run: task build
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      - uses: actions/setup-go@v3
         with:
-          name: myapp
-          path: myapp
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
+          go-version: '>=1.20.2'
+          cache: true
+      - uses: goreleaser/goreleaser-action@v4
         with:
-          name: myapp
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: myapp
+          distribution: goreleaser
+          version: latest
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
