@@ -17,7 +17,7 @@ mysql:
 apple:
     keyId: "BNY5GUGV38"
     teamId: "FUWV6U942Q"
-    topic: "com.twown.AlarmPaw"
+    topic: "com.twown.paw"
     apnsPrivateKey: |-
       -----BEGIN PRIVATE KEY-----
       MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvjopbchDpzJNojnc
