@@ -29,4 +29,5 @@ type Apple struct {
 	Topic          string `mapstructure:"topic" json:"topic" yaml:"topic"`
 	KeyID          string `mapstructure:"keyID" json:"keyID" yaml:"keyID"`
 	TeamID         string `mapstructure:"teamID" json:"teamID" yaml:"teamID"`
+	Develop        bool   `mapstructure:"develop" json:"develop" yaml:"develop"`
 }

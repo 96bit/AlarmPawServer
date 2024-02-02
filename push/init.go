@@ -54,7 +54,15 @@ func init() {
 			},
 			Timeout: apns2.HTTPClientTimeout,
 		},
-		Host: apns2.HostProduction,
+		Host: selectPushMode(),
 	}
 	log.Printf("init apns client success...\n")
+}
+
+func selectPushMode() string {
+	if config.LocalConfig.Apple.Develop {
+		return apns2.HostDevelopment
+	} else {
+		return apns2.HostProduction
+	}
 }
