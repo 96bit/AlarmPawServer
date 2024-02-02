@@ -18,6 +18,7 @@ apple: # 苹果推送配置
   keyId: "BNY5GUGV38"
   teamId: "FUWV6U942Q"
   topic: "com.twown.paw"
+  develop: false
   apnsPrivateKey: |-
     -----BEGIN PRIVATE KEY-----
     MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvjopbchDpzJNojnc
