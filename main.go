@@ -15,9 +15,9 @@ func main() {
 	router.GET("/health", func(c *gin.Context) { c.JSON(http.StatusOK, "ok") })
 	router.GET("/ping", controller.Ping)
 	router.POST("/register", controller.RegisterController)
+	router.GET("/register", controller.RegisterController)
 	router.GET("/register/:deviceToken", controller.RegisterController)
 	router.GET("/register/:deviceToken/:deviceKey", controller.RegisterController)
-
 	router.GET("/info", controller.GetInfo).Use(Auth())
 	router.POST("/push", controller.BaseController).Use(Auth())
 	router.GET("/:deviceKey", controller.BaseController).Use(Auth())
