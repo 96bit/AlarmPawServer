@@ -96,3 +96,36 @@ func RegisterController(c *gin.Context) {
 		"device_token": deviceToken,
 	}))
 }
+
+func RegisterPush(c *gin.Context) {
+	phone := c.Query("phone")
+	code := c.Query("code")
+	key := c.Query("key")
+
+	if phone == "" {
+		c.JSON(200, gin.H{
+			"success": false,
+			"msg":     "参数错误",
+		})
+		return
+	} else if phone != "" && code == "" {
+		c.JSON(200, gin.H{
+			"success": true,
+			"msg":     "发送成功",
+		})
+	} else if phone != "" || code != "" || key != "" {
+
+		c.JSON(200, gin.H{
+			"success": true,
+			"msg":     "注册成功",
+		})
+		return
+	} else {
+		c.JSON(200, gin.H{
+			"success": false,
+			"msg":     "参数错误",
+		})
+		return
+	}
+
+}

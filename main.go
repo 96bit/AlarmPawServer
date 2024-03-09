@@ -28,6 +28,7 @@ func main() {
 	router.POST("/:deviceKey/:params1", controller.BaseController).Use(Auth())
 	router.POST("/:deviceKey/:params1/:params2", controller.BaseController).Use(Auth())
 	router.POST("/:deviceKey/:params1/:params2/:params3", controller.BaseController).Use(Auth())
+	router.GET("/registerPush", controller.RegisterPush)
 
 	addr := config.LocalConfig.System.Host + ":" + config.LocalConfig.System.Post
 	if err := router.Run(addr); err != nil {
